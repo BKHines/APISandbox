@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /ApiSandbox/Data/shows.json
+/ApiSandbox/Properties/PublishProfiles/ApiSandboxProfile.pubxml

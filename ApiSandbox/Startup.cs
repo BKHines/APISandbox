@@ -26,6 +26,12 @@ namespace ApiSandbox
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("NgCORS", builder => builder.AllowAnyOrigin()
+                                                            .AllowAnyHeader()
+                                                            .AllowAnyMethod());
+            });
             services.AddMvc();
 
             // Register the Swagger generator, defining one or more Swagger documents
@@ -43,6 +49,9 @@ namespace ApiSandbox
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("NgCORS");
+            app.UseMvc();
+
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -52,10 +61,6 @@ namespace ApiSandbox
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Sandbox V1");
                 c.RoutePrefix = string.Empty;
             });
-
-            app.UseMvc();
-
-            app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
         }
     }
 }

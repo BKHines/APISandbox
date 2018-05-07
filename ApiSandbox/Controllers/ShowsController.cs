@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiSandbox.Repositories;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiSandbox.Controllers
 {
     [Produces("application/json")]
+    [EnableCors("NgCORS")]
     public class ShowsController : Controller
     {
         [HttpGet("api/shows/getepisodes")]
