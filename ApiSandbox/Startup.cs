@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiSandboxAPI.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +22,7 @@ namespace ApiSandbox
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -32,7 +33,9 @@ namespace ApiSandbox
                                                             .AllowAnyHeader()
                                                             .AllowAnyMethod());
             });
-            services.AddMvc();
+            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
+            services.AddScoped<ApiSandboxInterceptor>();
+            services.AddOptions();
 
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -50,6 +53,7 @@ namespace ApiSandbox
             }
 
             app.UseCors("NgCORS");
+            // app.UseMiddleware<ApiSandboxAPIResponseWrapper>();
             app.UseMvc();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.

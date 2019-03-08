@@ -3,16 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiSandbox.Repositories;
+using ApiSandboxAPI.Core;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace ApiSandbox.Controllers
 {
     [Produces("application/json")]
     [EnableCors("NgCORS")]
+    [ServiceFilter(typeof(ApiSandboxInterceptor))]
     public class ShowsController : Controller
     {
+        private readonly ApiSandboxLogger _logger;
+
+        public ShowsController(ILogger<ShowsController> logger)
+        {
+            _logger = new ApiSandboxLogger(logger);
+        }
+
         [HttpGet("api/shows/getepisodes")]
         public IActionResult GetEpisodes()
         {

@@ -19,6 +19,11 @@ namespace ApiSandbox
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging((hostingContext, builder) =>
+                {
+                    var configuration = hostingContext.Configuration.GetSection("Logging");
+                    builder.AddConfiguration(configuration);
+                })
                 .UseStartup<Startup>()
                 .Build();
     }
